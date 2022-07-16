@@ -9,12 +9,21 @@ const { orderRouter } = require('./routers/orderRouter')
 
 const { Restaurant } = require('./model/restaurantsModel')
 const { Meal } = require('./model/mealModel')
+const { User } = require('./model/userModel')
+const { Order } = require('./model/orderModel')
 
 const app = express()
 
 //relations 
 Meal.belongsTo(Restaurant, {foreignKey: 'restaurantId'})
 Restaurant.hasMany(Meal)
+
+User.hasMany(Order)
+Order.belongsTo(User, {foreignKey: 'userId'})
+
+Order.belongsTo(Meal, {foreignKey: 'mealId'})
+Meal.belongsTo(Order)
+
 
 database.authenticate()
     .then(() => console.log('database authenticated'))
